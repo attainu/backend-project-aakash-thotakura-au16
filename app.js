@@ -8,19 +8,21 @@ app.engine('hbs', expHbs({ extname: 'hbs'  }))
 app.set('view engine', 'hbs')
 
 app.use(express.static('public'))
+app.use(express.static('views/images')); 
+
 app.use(express.json());
-
-
 app.use(express.urlencoded({extended: true}))
 
 app.get('/', (req, res) => {
 	res.render('ds-main')
 })
 
+app.get('/signIn', (req, res) => {
+	res.render('signIn')
+})	
+
 app.post('/signIn', (req, res) => {
-	console.log('text')
-	// res.json({ details: 'enter your details to signIn' })
-	
+	console.log('text')	
 })
 
 app.get('/signUp', (req, res) => {
