@@ -1,4 +1,9 @@
+<div align=center>
+
 ![1](https://user-images.githubusercontent.com/74247978/118964605-4ab38500-b985-11eb-9861-ed523ef7315a.png)
+
+<div align="left">
+
 # **Hi!... PS Diary**
 HI! P.S Diary is a personal diary application to ease the work of users by this computerised software. By this application a user can store contact details, retrieve contact details, set reminders for important meetings of work and make dead line notes on a single platform. He can also set reminder messages which will tell him what to do at which time by stealing his attention.
 
