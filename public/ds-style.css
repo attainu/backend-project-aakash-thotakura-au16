@@ -43,3 +43,7 @@ body {
     flex-grow: 1;
     align-items: center;   
 }
+
+.dropdown-toggle::after {
+    display: none;
+  }

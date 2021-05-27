@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
 const expHbs = require('express-handlebars')
-// const cookieParser = require('cookie-parser')
 const session = require('express-session')
+// const mysql = require("mysql");
+const database = require('./core/database')
+
 
 app.engine('hbs', expHbs({ extname: 'hbs'  }))
 app.set('view engine', 'hbs')
@@ -13,21 +15,60 @@ app.use(express.static('views/images'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 
+// const connection = mysql.createConnection({
+//     host: "localhost",
+//     user: "root",
+//     password: "root@admin25",
+//     database: "nodejs"
+// });
+
+// connection.connect(function(error) {
+// 	if (error) throw error
+// 	else console.log("connection to database established")
+// });
+
 app.get('/', (req, res) => {
 	res.render('ds-main')
 })
 
-app.get('/signIn', (req, res) => {
-	res.render('signIn')
+app.get('/login', (req, res) => {
+	res.render('login')
 })	
 
-app.post('/signIn', (req, res) => {
-	console.log('text')	
+app.post('/login', (req, res) => {
+	let email = req.body.email;
+	let password = req.body.password;
+	
+	connection.query("select * from loginuser where user_email = ? and user_pass = ?", [email, password], function(error, results, fields) {
+		if (error) {throw error}
+		else {
+			if (results.length > 0) {
+				res.redirect("/home");
+			} else {
+				res.redirect('/');
+			}
+		}
+		res.end();
+	})
 })
 
-app.get('/signUp', (req, res) => {
-	console.log('rendering signUp')
-	res.render('signUp')
+
+app.get('/register', (req, res) => {
+	console.log('rendering register')
+	res.render('register')
+})
+
+app.post('/register', (req, res) => {
+	// res.send('registerd your details')
+	res.json({ 
+		"username": req.body.name,
+		"email": req.body.email,
+		"password": req.body.password
+	})
+})
+
+app.get("/home", (req, res) => {
+	res.render('home')
 })
 
 app.post('/notepad', (req, res) => {
