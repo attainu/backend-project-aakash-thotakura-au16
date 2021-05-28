@@ -1,9 +1,11 @@
+// const {initDatabaseConnection} = require('./core/database')
 const express = require('express');
 const app = express();
 const expHbs = require('express-handlebars')
 const session = require('express-session')
-// const mysql = require("mysql");
-const database = require('./core/database')
+const route = require('./routes/index')
+const mysql = require("mysql2/promise");
+require('dotenv').config()
 
 
 app.engine('hbs', expHbs({ extname: 'hbs'  }))
@@ -15,92 +17,36 @@ app.use(express.static('views/images'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 
-// const connection = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "root@admin25",
-//     database: "nodejs"
-// });
+app.use('/', route);
 
-// connection.connect(function(error) {
-// 	if (error) throw error
-// 	else console.log("connection to database established")
-// });
+let connection = null
 
-app.get('/', (req, res) => {
-	res.render('ds-main')
+async function initDatabaseConnection() {
+
+    connection = await mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASS,
+        database: process.env.MYSQL_DB
+    });
+    console.log("Connection Established with Database Successfully")
+}
+
+initDatabaseConnection()
+
+// errors: page not found
+app.use((req, res, next) => {
+	let err = new Error('Page not found');
+	err.status = 404;
+	next(err)
 })
 
-app.get('/login', (req, res) => {
-	res.render('login')
-})	
+//handling errros: page not found
+app.use((err, req, res, next) => {
+	res.status(err.status || 500);
+	res.send((err.message))
+});
 
-app.post('/login', (req, res) => {
-	let email = req.body.email;
-	let password = req.body.password;
-	
-	connection.query("select * from loginuser where user_email = ? and user_pass = ?", [email, password], function(error, results, fields) {
-		if (error) {throw error}
-		else {
-			if (results.length > 0) {
-				res.redirect("/home");
-			} else {
-				res.redirect('/');
-			}
-		}
-		res.end();
-	})
+app.listen(process.env.PORT, async () => {
+	console.log("Server Initiated; Listening at 3000")
 })
-
-
-app.get('/register', (req, res) => {
-	console.log('rendering register')
-	res.render('register')
-})
-
-app.post('/register', (req, res) => {
-	// res.send('registerd your details')
-	res.json({ 
-		"username": req.body.name,
-		"email": req.body.email,
-		"password": req.body.password
-	})
-})
-
-app.get("/home", (req, res) => {
-	res.render('home')
-})
-
-app.post('/notepad', (req, res) => {
-	res.send('this is a notepad for your to scribble')
-})
-
-app.post('/events', (req, res) => {
-	res.send('add important events')
-})
-
-app.post('/tasks', (req, res) => {
-	res.send('add list of to-do lists with reminder')
-})
-
-app.post('/photos', (req, res) => {
-	res.send('save your pictures')
-})
-
-app.post('/videos', (req, res) => {
-	res.send('save your videos')
-})
-
-app.post('/game', (req, res) => {
-	res.send('idea is not developed yet')
-})
-
-app.post('/record', (req, res) => {
-	res.send('record songs or notes')
-})
-
-app.post('/books', (req, res) => {
-	res.send('track your books (fav, finished, to_be_read)')
-})
-
-app.listen(3000, () => {console.log('Server Initiated')})
