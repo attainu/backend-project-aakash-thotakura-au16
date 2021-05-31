@@ -1,38 +1,48 @@
-// const {initDatabaseConnection} = require('./core/database')
+const {initDatabaseConnection} = require('./config/database')
+require('dotenv').config()
 const express = require('express');
 const app = express();
 const expHbs = require('express-handlebars')
 const session = require('express-session')
-const route = require('./routes/index')
-const mysql = require("mysql2/promise");
-require('dotenv').config()
+const router = require('./routes/index')
+const jwt = require('jsonwebtoken')
 
 
 app.engine('hbs', expHbs({ extname: 'hbs'  }))
 app.set('view engine', 'hbs')
 
 app.use(express.static('public'))
-app.use(express.static('views/images')); 
+app.use(express.static('views/images'));
+app.use(express.static('views/game'));
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 
-app.use('/', route);
+app.use('/', router);
 
-let connection = null
+// let connection = null
 
-async function initDatabaseConnection() {
+// async function initDatabaseConnection() {
 
-    connection = await mysql.createConnection({
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASS,
-        database: process.env.MYSQL_DB
-    });
-    console.log("Connection Established with Database Successfully")
-}
+//     connection = await mysql.createConnection({
+//         host: process.env.DB_HOST,
+//         user: process.env.DB_USER,
+//         password: process.env.DB_PASS,
+//         database: process.env.MYSQL_DB
+//     });
+//     connection.connect(function(err){
+//         if (err){
+//           console.log('error connecting:' + err.stack);
+//         }
+//         console.log('Connection Established with Database Successfully');
+//       });
+//     // connection.connect()
+//     // console.log("Connection Established with Database Successfully")
+//     // return connection
+// }
 
-initDatabaseConnection()
+// initDatabaseConnection()
+
 
 // errors: page not found
 app.use((req, res, next) => {
@@ -49,4 +59,5 @@ app.use((err, req, res, next) => {
 
 app.listen(process.env.PORT, async () => {
 	console.log("Server Initiated; Listening at 3000")
+    await initDatabaseConnection()
 })
