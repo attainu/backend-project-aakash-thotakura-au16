@@ -1,11 +1,13 @@
+const { initDatabaseConnection } = require('../config/database')
+
 
 exports.register_get = (req, res) => {
 	res.render('register')
 }
 
-exports.register_post = (req, res) => {
+exports.register_post = async (req, res) => {
 
-	console.log(req.body.name, req.body.email, req.body.password)
+	const connection = await initDatabaseConnection()
 
 	let sql = `INSERT INTO loginuser (user_name, user_email, user_pass) VALUES('${req.body.name}', '${req.body.email}', '${req.body.password}')`
 
