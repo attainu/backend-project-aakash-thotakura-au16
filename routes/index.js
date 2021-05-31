@@ -1,3 +1,4 @@
+const { initDatabaseConnection } = require('../config/database')
 const express = require('express');
 const router = express.Router()
 const { login_get, login_post }  = require('../controller/login')
@@ -5,13 +6,13 @@ const { register_get, register_post } = require('../controller/register')
 const { notepad_get, notepad_post }  = require('../controller/notepad')
 const { events_get, events_post }  = require('../controller/events')
 const { gallery_get, gallery_post }  = require('../controller/gallery')
-const { game_get, game_post }  = require('../controller/game')
+const { game_get, game_sudoku_get, game_tictactoe_get, game_post }  = require('../controller/game')
 const { books_get, books_post }  = require('../controller/books')
 const { record_get, record_post }  = require('../controller/record')
 
 
 
-router.get('/', (req, res) => {
+router.get('/', (req, res) => {	
 	res.render('ds-main')
 })
 
@@ -37,6 +38,8 @@ router.route('/gallery').post(gallery_post)
 
 
 router.route('/game').get(game_get)
+router.route('/game/g_sudoku').get(game_sudoku_get)
+router.route('/game/g_tictactoe').get(game_tictactoe_get)
 router.route('/game').post(game_post)
 
 
