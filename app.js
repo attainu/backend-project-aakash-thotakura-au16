@@ -6,6 +6,8 @@ const expHbs = require('express-handlebars')
 const session = require('express-session')
 const router = require('./routes/index')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs');
+const {validationResult} = require('express-validator');
 
 
 app.engine('hbs', expHbs({ extname: 'hbs'  }))
