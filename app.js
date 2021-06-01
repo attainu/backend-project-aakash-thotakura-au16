@@ -1,4 +1,4 @@
-const {initDatabaseConnection} = require('./config/database')
+//const {initDatabaseConnection} = require('./config/database')
 require('dotenv').config()
 const express = require('express');
 const app = express();
@@ -61,5 +61,5 @@ app.use((err, req, res, next) => {
 
 app.listen(process.env.PORT, async () => {
 	console.log("Server Initiated; Listening at 3000")
-    await initDatabaseConnection()
+   // await initDatabaseConnection()
 })
