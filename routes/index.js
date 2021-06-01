@@ -7,7 +7,7 @@ const { notepad_get, notepad_post }  = require('../controller/notepad')
 const { events_get, events_post }  = require('../controller/events')
 const { gallery_get, gallery_post }  = require('../controller/gallery')
 const { game_get, game_sudoku_get, game_tictactoe_get, game_post }  = require('../controller/game')
-const { books_get, books_post }  = require('../controller/books')
+const { books_get, books_post, booksdata_get }  = require('../controller/books')
 const { record_get, record_post }  = require('../controller/record')
 
 
@@ -48,6 +48,7 @@ router.route('/record').post(record_post)
 
 
 router.route('/books').get(books_get)
+router.route('/books').get(booksdata_get)
 router.route('/books').post(books_post)
 
 
