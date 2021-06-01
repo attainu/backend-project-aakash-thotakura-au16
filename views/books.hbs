@@ -1,0 +1,25 @@
+
+<div class="container">
+    <h1 class="text-center display-5">Wanna Add a Book</h1>
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <form action="/books" method="POST">
+
+            <div class="mb-3">
+                <label for="book_name" class="form-label">Book's Name</label>
+                <input type="text" name="book_name" class="form-control" id="book_name" placeholder="Enter Book Name">
+            </div>  
+
+            <div class="mb-3">
+                <label for="autor_name" class="form-label">Autor's Name</label>
+                <input type="autor_name" name="autor_name" class="form-control" id="autor_name" placeholder="Enter Autor's Name">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="customFile">Upload File</label>
+                <input type="file" class="form-control" id="customFile" />
+            </div>
+            
+            <button type="submit" class="btn btn-primary mb-2">Save</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+{
+  "name": "backend-project-aakash-thotakura-au16",
+  "version": "1.0.0",
+  "description": "planner",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/attainu/backend-project-aakash-thotakura-au16.git"
+  },
+  "keywords": [],
+  "author": "aakash_thotakura",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/attainu/backend-project-aakash-thotakura-au16/issues"
+  },
+  "homepage": "https://github.com/attainu/backend-project-aakash-thotakura-au16#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-handlebars": "^5.3.0",
+    "express-session": "^1.17.2",
+    "express-validator": "^6.11.1",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.2.5"
+  }
+}
