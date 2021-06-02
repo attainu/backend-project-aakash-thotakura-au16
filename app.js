@@ -1,65 +1,65 @@
+//const {initDatabaseConnection} = require('./config/database')
+require('dotenv').config()
 const express = require('express');
 const app = express();
 const expHbs = require('express-handlebars')
-// const cookieParser = require('cookie-parser')
 const session = require('express-session')
+const router = require('./routes/index')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs');
+const {validationResult} = require('express-validator');
+
 
 app.engine('hbs', expHbs({ extname: 'hbs'  }))
 app.set('view engine', 'hbs')
 
 app.use(express.static('public'))
-app.use(express.static('views/images')); 
+app.use(express.static('views/images'));
+app.use(express.static('views/game'));
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 
-app.get('/', (req, res) => {
-	res.render('ds-main')
+app.use('/', router);
+
+// let connection = null
+
+// async function initDatabaseConnection() {
+
+//     connection = await mysql.createConnection({
+//         host: process.env.DB_HOST,
+//         user: process.env.DB_USER,
+//         password: process.env.DB_PASS,
+//         database: process.env.MYSQL_DB
+//     });
+//     connection.connect(function(err){
+//         if (err){
+//           console.log('error connecting:' + err.stack);
+//         }
+//         console.log('Connection Established with Database Successfully');
+//       });
+//     // connection.connect()
+//     // console.log("Connection Established with Database Successfully")
+//     // return connection
+// }
+
+// initDatabaseConnection()
+
+
+// errors: page not found
+app.use((req, res, next) => {
+	let err = new Error('Page not found');
+	err.status = 404;
+	next(err)
 })
 
-app.get('/signIn', (req, res) => {
-	res.render('signIn')
-})	
+//handling errros: page not found
+app.use((err, req, res, next) => {
+	res.status(err.status || 500);
+	res.send((err.message))
+});
 
-app.post('/signIn', (req, res) => {
-	console.log('text')	
+app.listen(process.env.PORT, async () => {
+	console.log("Server Initiated; Listening at 3000")
+   // await initDatabaseConnection()
 })
-
-app.get('/signUp', (req, res) => {
-	console.log('rendering signUp')
-	res.render('signUp')
-})
-
-app.post('/notepad', (req, res) => {
-	res.send('this is a notepad for your to scribble')
-})
-
-app.post('/events', (req, res) => {
-	res.send('add important events')
-})
-
-app.post('/tasks', (req, res) => {
-	res.send('add list of to-do lists with reminder')
-})
-
-app.post('/photos', (req, res) => {
-	res.send('save your pictures')
-})
-
-app.post('/videos', (req, res) => {
-	res.send('save your videos')
-})
-
-app.post('/game', (req, res) => {
-	res.send('idea is not developed yet')
-})
-
-app.post('/record', (req, res) => {
-	res.send('record songs or notes')
-})
-
-app.post('/books', (req, res) => {
-	res.send('track your books (fav, finished, to_be_read)')
-})
-
-app.listen(3000, () => {console.log('Server Initiated')})
