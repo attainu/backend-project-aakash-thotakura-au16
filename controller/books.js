@@ -19,6 +19,7 @@ exports.books_post = async (req, res) => {
 
 }
 
+// books
 exports.booksdata_get = async (req, res) => {
 
 	const connection = await initDatabaseConnection()
@@ -27,4 +28,24 @@ exports.booksdata_get = async (req, res) => {
 	const [row] = await connection.execute(sql)
 	res.send(row)
 
+}
+
+// update books
+exports.books_update =  async (req, res) => {
+
+    let sql = `UPDATE authors SET book_name='${req.body.book_name}', author_name='${req.body.author_name}' WHERE book_id='${req.params.book_id}'`;
+    
+    const [rows] = await connection.execute(sql) 
+    res.json(rows)
+}
+
+// delete books
+exports.books_delete =  async (req, res) => {
+    
+    let sql = `DELETE FROM authors WHERE book_id='${req.params.book_id}'`;
+    console.log(sql)
+    
+    const [rows] = await connection.execute(sql)
+    
+    res.json(rows)
 }
