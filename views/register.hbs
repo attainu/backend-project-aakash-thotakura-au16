@@ -1,6 +1,9 @@
 
 <div class="container">
     <h1 class="text-center display-5">Register</h1>
+        {{#if message}}
+            <p class="alert alert-danger">{{message}}</p>
+        {{/if}}
     <div class="d-flex flex-column justify-content-center align-items-center">
         <form action="/register" method="POST">
 
@@ -19,14 +22,17 @@
                 <input type="password" name="password" class="form-control" id="password" placeholder="Password">
             </div>
 
-            {{!-- <div class="mb-3">
+            <div class="mb-3">
                 <label for="password" class="form-label">Confirm Password</label>
-                <input type="password" name="cpassword" class="form-control" id="password" placeholder="Password">
-            </div> --}}
+                <input type="password" name="cpassword" class="form-control" id="password" placeholder="Confirm Password">
+            </div>
 
             <button type="submit" class="btn btn-primary mb-2">Register</button>
         </form>
+
         <a href="/login">Already have an account? Click Here to Login</a>
+
+
+
     </div>
-    
 </div>

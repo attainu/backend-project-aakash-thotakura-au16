@@ -1,6 +1,6 @@
 
 const { initDatabaseConnection } = require('../config/database')
-const { check, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
 
 
 exports.register_get = (req, res) => {
@@ -8,25 +8,61 @@ exports.register_get = (req, res) => {
 }
 
 exports.register_post = async (req, res) => {
-    console.log(req.body)
 
-    const { name, email, password } = req.body
+    const connection = await initDatabaseConnection()
 
-    connection.query('SELECT email FROM loginuser WHERE email=?', [email], async (error, result) => {
-        if (error) {
-            console.log(error);
+    try {
+        const { name, email, password, cpassword } = req.body;
+
+        console.log("body", req.body)
+
+        const result = await connection.query('SELECT user_email FROM loginuser WHERE user_email=?', email)
+
+        // const result = await connection.query('SELECT user_email FROM loginuser WHERE user_email="aakash@gmail.com"', email)[0]
+        console.log("queryRes", result[0])
+        // console.log(result[0].length)
+        
+        
+        // check for duplicate email address
+        if (result[0].length > 0) {
+            return res.render('register', { message: 'Email already registered' })
+        }
+        // check for same password
+        else if ( password !== cpassword) {
+            return res.render('register', {message: 'Password mismatch'})
         }
 
-        if (result.length > 0) {
-            return res.render('register', {
-                message: 'Email already in use'
-            })
+        let hashedPassword = await bcrypt.hash(password, 8)
+        // console.log(hashedPassword)
+
+        connection.query('INSERT INTO loginuser SET ?', {'user_name': name, 'user_email': email, 'user_pass': password}), (err, result) => {
+            if (err) throw err
+            else {
+                res.render('login', {message: 'User Registered'})
+            }
         }
 
-        let hashword = await bcrypt.hash(password, 4)
-        console.log(hashword)
-    })
+    } catch (error) {
+        console.log(error)
+    }
 }
+
+//     const { name, email, password } = req.body
+
+//     connection.query('SELECT email FROM loginuser WHERE email=?', [email], async (error, result) => {
+//         if (error) {
+//             console.log(error);
+//         }
+
+//         if (result.length > 0) {
+//             return res.render('register', {
+//                 message: 'Email already in use'
+//             })
+//         }
+
+//         let hashword = await bcrypt.hash(password, 4)
+//         console.log(hashword)
+//     })
 
 
 
