@@ -34,16 +34,3 @@ body {
     width: 300px;
     height: 260px;
 }
-
-.flex-perinput1 {
-    flex-grow: 8;
-}
-
-.flex-perinput2 {
-    flex-grow: 1;
-    align-items: center;   
-}
-
-.dropdown-toggle::after {
-    display: none;
-  }
