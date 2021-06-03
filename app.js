@@ -2,12 +2,11 @@ const {initDatabaseConnection} = require('./config/database')
 require('dotenv').config()
 const express = require('express');
 const app = express();
-const expHbs = require('express-handlebars')
-const session = require('express-session')
-const router = require('./routes/index')
-const jwt = require('jsonwebtoken')
+const expHbs = require('express-handlebars');
+const session = require('express-session');
+const router = require('./routes/index');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const {validationResult} = require('express-validator');
 
 
 app.engine('hbs', expHbs({ extname: 'hbs'  }))
@@ -18,7 +17,12 @@ app.use(express.static('public'))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
+
 app.use('/', router);
+
+app.get('/index', async (req, res) => {
+	res.render('index')
+})
 
 // let connection = null
 
