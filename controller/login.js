@@ -8,42 +8,61 @@ exports.login_get = (req, res) => {
 	res.render('login')
 }
 
-exports.login_post = async (req,res,next) =>{
-    const errors = validationResult(req);
-	const connection = await initDatabaseConnection()
+// exports.login_post = [
+//     check('email','Invalid email').isEmail(),
 
-    if(!errors.isEmpty()){
-        return res.status(422).json({ errors: errors.array() });
-    }
+// ], async (req, res, next) => {
+//     const err = validationResult(req);
 
-    try{
+//     if (!err.isEmpty()) {
+//         return res.status(400).json({
+//             success: false,
+//             err: err.array()
+//         })
+//     }
 
-        const [row] = await connection.execute(
-            `SELECT * FROM loginuser WHERE user_email=?`,
-            [req.body.email]
-          );
+//     res.status(200).json({
+//         success: true,
+//         message: 'Login Successful'
+//     })
+// }
 
-        if (row.length === 0) {
-            return res.status(422).json({
-                message: "Invalid email address",
-            });
-        }
+// exports.login_post = async (req,res,next) =>{
+//     const errors = validationResult(req);
+// 	const connection = await initDatabaseConnection()
 
-        const passMatch = await bcrypt.compare(req.body.password, row[0].password);
-        if(!passMatch){
-            return res.status(422).json({
-                message: "Incorrect password",
-            });
-        }
+//     if(!errors.isEmpty()){
+//         return res.status(422).json({ errors: errors.array() });
+//     }
 
-        const theToken = jwt.sign({id:row[0].id},'the-super-strong-secrect',{ expiresIn: '1h' });
+//     try{
 
-        return res.json({
-            token:theToken
-        });
+//         const [row] = await connection.execute(
+//             `SELECT * FROM loginuser WHERE user_email=?`,
+//             [req.body.email]
+//           );
 
-    }
-    catch(err){
-        next(err);
-    }
-}
+//         if (row.length === 0) {
+//             return res.status(422).json({
+//                 message: "Invalid email address",
+//             });
+//         }
+
+//         const passMatch = await bcrypt.compare(req.body.password, row[0].password);
+//         if(!passMatch){
+//             return res.status(422).json({
+//                 message: "Incorrect password",
+//             });
+//         }
+
+//         const theToken = jwt.sign({id:row[0].id},'the-super-strong-secrect',{ expiresIn: '1h' });
+
+//         return res.json({
+//             token:theToken
+//         });
+
+//     }
+//     catch(err){
+//         next(err);
+//     }
+// }

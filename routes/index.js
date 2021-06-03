@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 
 
 router.route('/login').get(login_get)
-router.route('/login').post(login_post)
+// router.route('/login').post(login_post)
 
 
 router.route('/register').get(register_get)
