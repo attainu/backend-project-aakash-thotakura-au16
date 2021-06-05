@@ -14,4 +14,8 @@
         </form>
         <a href="/register">Don't have an account? Click Here to Register</a>
     </div>
+
+    {{#if message}}
+        <h4 class="alert alert-danger">{{message}}</h4>
+    {{/if}}
     
