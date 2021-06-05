@@ -7,6 +7,8 @@ exports.register_get = (req, res) => {
 	res.render('register')
 }
 
+
+
 exports.register_post = async (req, res) => {
 
     const connection = await initDatabaseConnection()
@@ -14,12 +16,12 @@ exports.register_post = async (req, res) => {
     try {
         const { name, email, password, cpassword } = req.body;
 
-        console.log("body", req.body)
+        // console.log("body", req.body)
 
         const result = await connection.query('SELECT user_email FROM loginuser WHERE user_email=?', email)
 
         // const result = await connection.query('SELECT user_email FROM loginuser WHERE user_email="aakash@gmail.com"', email)[0]
-        console.log("queryRes", result[0])
+        // console.log("queryRes", result[0])
         // console.log(result[0].length)
         
         
