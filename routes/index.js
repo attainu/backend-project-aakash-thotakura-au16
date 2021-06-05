@@ -1,7 +1,7 @@
-const { initDatabaseConnection } = require('../config/database')
+// const { initDatabaseConnection } = require('../config/database')
 const express = require('express');
 const router = express.Router()
-const { login_get, login_post }  = require('../controller/login')
+const { login_get, login_post, logout_get, logout_post }  = require('../controller/login')
 const { register_get, register_post } = require('../controller/register')
 const { notepad_get, notepad_post }  = require('../controller/notepad')
 const { events_get, events_post }  = require('../controller/events')
@@ -9,7 +9,17 @@ const { gallery_get, gallery_post }  = require('../controller/gallery')
 const { game_get, game_sudoku_get, game_tictactoe_get, game_post }  = require('../controller/game')
 const { books_get, books_post, booksdata_get }  = require('../controller/books')
 const { record_get, record_post }  = require('../controller/record')
+// const { authenticateToken } = require('../middleware/checkauth')
+const { protect } =  require('../middleware/checkauth')
 
+
+// router.use((req, res, next) => {
+// 	console.log("cookies are", req.cookies)
+// 	console.log("headers",req.headers)
+// 	next()
+// })
+
+// router.use(cloud)
 
 
 router.get('/', (req, res) => {	
@@ -18,12 +28,15 @@ router.get('/', (req, res) => {
 
 
 router.route('/login').get(login_get)
-// router.route('/login').post(login_post)
+router.route('/login').post(login_post)
+router.route('/login').post(logout_get)
+router.route('/login').post(logout_post)
 
 
 router.route('/register').get(register_get)
 router.route('/register').post(register_post)
 
+router.use(protect)
 
 router.route('/notepad').get(notepad_get)
 router.route('/notepad').post(notepad_post)
@@ -37,7 +50,7 @@ router.route('/gallery').get(gallery_get)
 router.route('/gallery').post(gallery_post)
 
 
-router.route('/game').get(game_get)
+router.get('/game', protect, game_get)
 router.route('/game/g_sudoku').get(game_sudoku_get)
 router.route('/game/g_tictactoe').get(game_tictactoe_get)
 router.route('/game').post(game_post)
